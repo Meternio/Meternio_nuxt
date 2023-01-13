@@ -11,35 +11,50 @@ function toggleDrawer() {
 <template>
   <div class="h-5"></div>
   <header class="header sticky top-0 z-50">
-    <div class="header-container container flex items-center justify-between py-5">
-      <NuxtLink to="/" aria-label="Home" class="header-logo">
-        <nuxt-img src="img/logo_white.webp" height="40" alt="Logo" />
+    <div
+      class="header-container container flex items-center justify-between py-5"
+    >
+      <NuxtLink
+        :to="localePath('/')"
+        :aria-label="$t('header.home')"
+        class="header-logo"
+      >
+        <nuxt-img src="img/logo_white.webp" height="40" :alt="$t('header.logo')" />
       </NuxtLink>
       <nav
         class="header-main-nav text-white no-underline font-bold md:block hidden last:m-3"
         role="navigation"
       >
-        <NuxtLink to="/" role="menuitem" class="mr-2 hover:text-primary"
-          >Home</NuxtLink
+        <NuxtLink
+          :to="localePath('/experience')"
+          role="menuitem"
+          class="mr-2"
+          >{{ $t("header.experience") }}</NuxtLink
         >
         <NuxtLink
-          to="/experience"
+          :to="localePath('/portfolio')"
           role="menuitem"
-          class="mr-2 hover:text-primary"
-          >Experience</NuxtLink
+          class="mr-2"
+          >{{ $t("header.portfolio") }}</NuxtLink
         >
         <NuxtLink
-          to="/portfolio"
+          :to="localePath('/contact')"
           role="menuitem"
-          class="mr-2 hover:text-primary"
-          >Portfolio</NuxtLink
+          class="mr-2"
+          >{{ $t("header.contact") }}</NuxtLink
         >
-        <NuxtLink to="/contact" role="menuitem" class="mr-2 hover:text-primary"
-          >Contact</NuxtLink
+        <NuxtLink
+          :to="localePath('/blog')"
+          role="menuitem"
+          class="mr-2"
+          >{{ $t("header.blog") }}</NuxtLink
         >
-        <NuxtLink to="/blog" role="menuitem" class="mr-0 hover:text-primary"
-          >Blog</NuxtLink
-        >
+        <NuxtLink :to="switchLocalePath('en')" v-if="$i18n.locale == 'de'">{{
+          $t("header.language.en")
+        }}</NuxtLink>
+        <NuxtLink :to="switchLocalePath('de')" v-if="$i18n.locale == 'en'">{{
+          $t("header.language.de")
+        }}</NuxtLink>
       </nav>
       <button
         class="header-menu-toggle transparent border-0 text-white cursor-pointer md:hidden"
@@ -48,7 +63,7 @@ function toggleDrawer() {
         aria-controls="drawer"
       >
         <Icon name="fa6-solid:bars" />
-        <span class="sr-only">Toggle mobile drawer</span>
+        <span class="sr-only">{{ $t("header.toggle") }}</span>
       </button>
       <div
         class="header-drawer fixed top-0 -right-80 bottom-0 w-80 overflow-auto z-50 transition-all md:hidden"
@@ -61,51 +76,51 @@ function toggleDrawer() {
           aria-hidden="true"
         >
           <NuxtLink
-            to="/"
+            :to="localePath('/')"
             class="m-auto block py-5"
             role="menuitem"
-            aria-label="Home"
+            :aria-label="$t('header.home')"
           >
             <nuxt-img
               src="img/logo_white.webp"
               height="40"
-              alt="Logo"
+              :alt="$t('header.logo')"
               class="m-auto"
             />
           </NuxtLink>
           <NuxtLink
-            to="/experience"
+            :to="localePath('/experience')"
             role="menuitem"
             class="block text-white no-underline p-2 border-b-2"
-            >Experience</NuxtLink
+            >{{ $t("header.experience") }}</NuxtLink
           >
           <NuxtLink
-            to="/portfolio"
+            :to="localePath('/portfolio')"
             role="menuitem"
             class="block text-white no-underline p-2 border-b-2"
-            >Portfolio</NuxtLink
+            >{{ $t("header.portfolio") }}</NuxtLink
           >
           <NuxtLink
-            to="/contact"
+            :to="localePath('/contact')"
             role="menuitem"
             class="block text-white no-underline p-2 border-b-2"
-            >Contact</NuxtLink
+            >{{ $t("header.contact") }}</NuxtLink
           >
           <NuxtLink
-            to="/blog"
+            :to="localePath('/blog')"
             role="menuitem"
             class="block text-white no-underline p-2 border-b-2"
-            >Blog</NuxtLink
+            >{{ $t("header.blog") }}</NuxtLink
           >
           <Icon
             name="fa6-solid:xmark"
-            class="header-drawer-close absolute top-5 right-5 text-white"
+            class="header-drawer-close absolute top-5 right-5 text-white cursor-pointer"
             @click="toggleDrawer"
-            aria-label="close menu"
+            :aria-label="$t('header.close')"
           />
         </nav>
         <div
-          class="header-drawer-background left-0 top-0 right-0 bottom-0 fixed bg-black opacity-60 z-40 md:hidden"
+          class="header-drawer-background left-0 top-0 right-0 bottom-0 fixed bg-black opacity-60 z-40 md:hidden cursor-pointer"
           :class="{ block: showDrawer, hidden: !showDrawer }"
           @click="toggleDrawer"
         ></div>

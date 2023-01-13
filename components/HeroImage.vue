@@ -1,6 +1,6 @@
 <script setup>
 import {
-  ref, defineProps, onMounted, onUnmounted,
+  ref, onMounted, onUnmounted,
 } from 'vue';
 import { throttle } from '@/functions/main';
 
@@ -24,7 +24,6 @@ function checkInViewport(el) {
 function parallax() {
   if (checkInViewport(target.value)) {
     backgroundPosition.value = `50% ${50 - (window.scrollY / 100) * 3}%`;
-    console.log('test');
   }
 }
 
