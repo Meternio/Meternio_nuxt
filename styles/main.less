@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  font-family: theme('fontFamily.roboto');
+  font-size: 16px;
+
+  @media screen and (min-width: theme('screens.lg')) {
+    font-size: 18px;
+  }
+  @media screen and (min-width: theme('screens.2xl')) {
+    font-size: 20px;
+  }
+}
+
+.container {
+  margin: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  /*@media screen and (min-width: threme('screens.sm')){
+          padding-left: 0;
+          padding-right: 0;
+      }*/
+}
+
+/* Typography rules */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+h4 {
+  font-size: 1.5rem;
+}
+h5 {
+  font-size: 1.25rem;
+}
+h6 {
+  font-size: 1rem;
+}
+
+/* Set the font size for paragraphs */
+p {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin: 0;
+}
+
+ul,
+ol {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin: 0.75rem 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: theme('colors.primary');;
+}
