@@ -24,3 +24,26 @@ export function debounce(fn, wait) {
     }, wait);
   };
 }
+
+export function bindRaf(fn, throttle) {
+  var isRunning;
+  var that;
+  var args;
+
+  var run = function() {
+    isRunning = false;
+    fn.apply(that, args);
+  };
+
+  return function() {
+    that = this;
+    args = arguments;
+
+    if (isRunning && throttle) {
+      return;
+    }
+
+    isRunning = true;
+    requestAnimationFrame(run);
+  };
+}

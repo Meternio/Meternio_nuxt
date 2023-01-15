@@ -1,5 +1,5 @@
-import de from './locales/de.json'
-import en from './locales/en.json'
+import de from "./locales/de.json";
+import en from "./locales/en.json";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -48,8 +48,20 @@ export default defineNuxtConfig({
       fallbackLocale: "de",
       messages: {
         de,
-        en
-      }
+        en,
+      },
+    },
+  },
+  image: {
+    // The screen sizes predefined by `@nuxt/image`:
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+      "2xxl": 2560,
     },
   },
 });

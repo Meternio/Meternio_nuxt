@@ -1,16 +1,45 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { throttle } from "@/functions/main";
 
 const showDrawer = ref(false);
+let isHeaderSticky = ref(false);
 
 function toggleDrawer() {
   showDrawer.value = !showDrawer.value;
 }
+
+function toggleHeaderTransparency() {
+  if (window.scrollY > 20 && !isHeaderSticky.value) {
+    isHeaderSticky.value = true;
+  } else if (window.scrollY <= 20 && isHeaderSticky.value) {
+    isHeaderSticky.value = false;
+  }
+}
+
+const throttledHeaderTransparency = throttle(toggleHeaderTransparency, 30);
+
+onMounted(() => {
+  window.addEventListener("scroll", throttledHeaderTransparency);
+});
+
+onUnmounted(() => {
+  window.addEventListener("scroll", throttledHeaderTransparency);
+});
 </script>
 
 <template>
-  <div class="h-5"></div>
-  <header class="header sticky top-0 z-50">
+  <div
+    class="h-5 z-50 relative transition-all"
+    :class="{ 'bg-slate': isHeaderSticky }"
+  ></div>
+  <header
+    class="header sticky top-0 z-50 transition-all"
+    :class="{
+      'is-sticky bg-slate shadow-[0_10px_15px_1px_rgba(0,0,0,0.75)]':
+        isHeaderSticky,
+    }"
+  >
     <div
       class="header-container container flex items-center justify-between py-5"
     >
@@ -19,7 +48,13 @@ function toggleDrawer() {
         :aria-label="$t('header.home')"
         class="header-logo"
       >
-        <nuxt-img src="img/logo_white.webp" height="40" :alt="$t('header.logo')" />
+        <nuxt-img
+          src="img/logo_white.webp"
+          preload
+          height="60"
+          class="h-10"
+          :alt="$t('header.logo')"
+        />
       </NuxtLink>
       <nav
         class="header-main-nav text-white no-underline font-bold md:block hidden last:m-3"
@@ -31,24 +66,15 @@ function toggleDrawer() {
           class="mr-2"
           >{{ $t("header.experience") }}</NuxtLink
         >
-        <NuxtLink
-          :to="localePath('/portfolio')"
-          role="menuitem"
-          class="mr-2"
-          >{{ $t("header.portfolio") }}</NuxtLink
-        >
-        <NuxtLink
-          :to="localePath('/contact')"
-          role="menuitem"
-          class="mr-2"
-          >{{ $t("header.contact") }}</NuxtLink
-        >
-        <NuxtLink
-          :to="localePath('/blog')"
-          role="menuitem"
-          class="mr-2"
-          >{{ $t("header.blog") }}</NuxtLink
-        >
+        <NuxtLink :to="localePath('/portfolio')" role="menuitem" class="mr-2">{{
+          $t("header.portfolio")
+        }}</NuxtLink>
+        <NuxtLink :to="localePath('/contact')" role="menuitem" class="mr-2">{{
+          $t("header.contact")
+        }}</NuxtLink>
+        <NuxtLink :to="localePath('/blog')" role="menuitem" class="mr-2">{{
+          $t("header.blog")
+        }}</NuxtLink>
         <NuxtLink :to="switchLocalePath('en')" v-if="$i18n.locale == 'de'">{{
           $t("header.language.en")
         }}</NuxtLink>
