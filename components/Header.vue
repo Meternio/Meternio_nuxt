@@ -29,15 +29,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    class="h-5 z-50 relative transition-all"
-    :class="{ 'bg-slate': isHeaderSticky }"
-  ></div>
   <header
-    class="header sticky top-0 z-50 transition-all"
+    class="header fixed w-full top-0 z-50 transition-all"
     :class="{
       'is-sticky bg-slate shadow-[0_10px_15px_1px_rgba(0,0,0,0.75)]':
         isHeaderSticky,
+        'pt-5':
+        !isHeaderSticky,
     }"
   >
     <div
