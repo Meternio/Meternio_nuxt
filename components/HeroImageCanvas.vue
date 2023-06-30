@@ -25,7 +25,7 @@ function drawImage() {
 
   // Draw polygon relative to the image
   for (var i = 0; i < props.polygons.length; i++) {
-    drawPolygon(props.polygons[i], i);
+    drawPolygon(props.polygons[i].coordinates, i);
   }
 }
 
@@ -47,6 +47,36 @@ function drawPolygon(polygonPoints, index) {
   if (hoveredPolygons.includes(index)) {
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
     ctx.fill();
+
+    if (props.polygons[index].text) {
+      const text = props.polygons[index].text;
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "black";
+
+      // Calculate the midpoint of the polygon
+      const midpoint = {
+        x: polygonPoints.reduce((sum, point) => sum + point.x, 0) / polygonPoints.length,
+        y: polygonPoints.reduce((sum, point) => sum + point.y, 0) / polygonPoints.length
+      };
+
+      // Measure the width and height of the text
+      const textWidth = ctx.measureText(text).width;
+      const textHeight = parseInt(ctx.font); // Approximate height based on font size
+
+      // Adjust the position based on the text width and height
+      const textX = midpoint.x * scale + offsetX - (textWidth / 2);
+      const textY = midpoint.y * scale + offsetY + (textHeight / 2);
+
+      // Draw the text
+      ctx.fillText(text, textX, textY);
+    }
+    if (props.polygons[index].href) {
+      canvas.style.cursor = 'pointer';
+    }
+  }
+
+  if (hoveredPolygons.length == 0) {
+    canvas.style.cursor = 'default';
   }
 
   ctx.lineWidth = 5;
@@ -86,7 +116,7 @@ function handleMouseMove(event) {
 
   hoveredPolygons = [];
   for (var i = 0; i < props.polygons.length; i++) {
-    if (isPointInPolygon(mousePosition, props.polygons[i])) {
+    if (isPointInPolygon(mousePosition, props.polygons[i].coordinates)) {
       hoveredPolygons.push(i);
     }
   }
@@ -104,8 +134,10 @@ function handleClick(event) {
   };
 
   for (var i = 0; i < props.polygons.length; i++) {
-    if (isPointInPolygon(clickedPoint, props.polygons[i])) {
-      console.log("Polygon clicked!");
+    if (isPointInPolygon(clickedPoint, props.polygons[i].coordinates)) {
+      if(props.polygons[i].href){
+        navigateTo(props.polygons[i].href);
+      }
     }
   }
 }
