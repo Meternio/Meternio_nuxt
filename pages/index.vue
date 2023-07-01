@@ -1,6 +1,6 @@
 <template>
   <div class="home bg-slate h-[100dvh]">
-    <HeroImageThree image="/img/main_home.png" id="hero_home" :polygons="[
+    <HeroImageThree image="/img/main_home.jpg" :polygons="[
       {
         href: '/about',
         text: 'About',
