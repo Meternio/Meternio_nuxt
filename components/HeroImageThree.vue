@@ -55,7 +55,7 @@ onMounted(() => {
     0.1,
     1000
   );
-  camera.position.set(0, 0, 5);
+  camera.position.set(0, 0, 400);
 
   // Create a renderer
   renderer = new THREE.WebGLRenderer();
@@ -75,12 +75,13 @@ onMounted(() => {
   scene.add(sphereMesh);
 
   // Create a sphere segment geometry
-  var segmntSphereGeometry = new THREE.SphereGeometry(500, 60, 40, 0.85, 0.7, 1.4, 0.5);
-  var segmntSphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, opacity: 0.5, transparent: true, border: 0x000000 });
+  // positional x, width, positional y, height
+  var segmntSphereGeometry = new THREE.SphereGeometry(500, 60, 40, -0.95, 0.3, 1.63, 0.2);
+  var segmntSphereMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, opacity: 0.5, transparent: true, border: 0x000000 });
   segmentSphereMesh = new THREE.Mesh(segmntSphereGeometry, segmntSphereMaterial);
   segmentSphereMesh.material.depthTest = false;
   segmentSphereMesh.renderOrder = 1;
-  segmentSphereMesh.position.set(0, 20, 0);
+  segmentSphereMesh.position.set(0,0,0);
   sphereMesh.add(segmentSphereMesh);
 
   // Render the scene
