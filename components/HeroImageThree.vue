@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import { debounce } from "@/functions/main";
+import { debounce, throttle } from "@/functions/main";
 import * as THREE from "three";
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const props = defineProps({
   image: String,
@@ -11,7 +11,8 @@ const props = defineProps({
 
 const threeContainer = ref(null);
 
-let camera, renderer, scene, controls, sphereMesh, segmentSphereMesh;
+let camera, renderer, scene, controls, sphereMesh;
+const segmentSpheres = [];
 
 function handleResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -20,7 +21,7 @@ function handleResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function handleMouseClick(event) {
+function handleInteractions(event) {
   event.preventDefault();
 
   // Calculate normalized device coordinates
@@ -28,21 +29,59 @@ function handleMouseClick(event) {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-  // Perform raycasting from the camera to the clicked position
+  // Perform raycasting from the camera to the mouse position
   var raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
   // Check for intersection between the ray and the segmentSphere mesh
-  var intersects = raycaster.intersectObject(segmentSphereMesh);
+  var intersects = [];
+  segmentSpheres.forEach(function (segmentSphere) {
+    var segmentIntersects = raycaster.intersectObject(segmentSphere);
+    intersects.push(...segmentIntersects);
+  });
 
-  // If there is an intersection, handle the click event
+  // If there is an intersection, handle the hover event
   if (intersects.length > 0) {
-    console.log('Segment clicked!');
-    // Perform your desired action here when the segment is clicked
+    if (event.type === "mousemove") {
+      console.log("Mouse is moving");
+    } else if (event.type === "click") {
+      console.log("Mouse was clicked");
+    }
   }
 }
 
+function createSegmentWithOutline(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength) {
+  // Create a sphere segment geometry
+  var segmentSphereGeometry = new THREE.SphereGeometry(
+    radius,
+    widthSegments,
+    heightSegments,
+    phiStart,
+    phiLength,
+    thetaStart,
+    thetaLength
+  );
+
+  // Create a material for the main segment
+  var segmentMaterial = new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    side: THREE.DoubleSide,
+    opacity: 0.5,
+    transparent: true,
+    depthTest: false,
+    deepWrite: false,
+  });
+
+  // Create the main segment mesh
+  var segmentMesh = new THREE.Mesh(segmentSphereGeometry, segmentMaterial);
+
+  // Add the group to the scene
+  scene.add(segmentMesh);
+  segmentSpheres.push(segmentMesh);
+}
+
 const debouncedHandleResize = debounce(handleResize, 400);
+const throttledHandleInteractions = throttle(handleInteractions, 40);
 
 onMounted(() => {
   // Create a scene
@@ -64,6 +103,10 @@ onMounted(() => {
 
   // Create controls
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 100;
+  controls.maxDistance = 500;
+  controls.zoomSpeed = 2;
+  controls.update();
 
   // Create a sphere for the 360 View
   var sphereGeometry = new THREE.SphereGeometry(500, 60, 40);
@@ -76,13 +119,7 @@ onMounted(() => {
 
   // Create a sphere segment geometry
   // positional x, width, positional y, height
-  var segmntSphereGeometry = new THREE.SphereGeometry(500, 60, 40, -0.95, 0.3, 1.63, 0.2);
-  var segmntSphereMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, opacity: 0.5, transparent: true, border: 0x000000 });
-  segmentSphereMesh = new THREE.Mesh(segmntSphereGeometry, segmntSphereMaterial);
-  segmentSphereMesh.material.depthTest = false;
-  segmentSphereMesh.renderOrder = 1;
-  segmentSphereMesh.position.set(0,0,0);
-  sphereMesh.add(segmentSphereMesh);
+  createSegmentWithOutline(500, 60, 40, -0.95, 0.3, 1.63, 0.2);
 
   // Render the scene
   function animate() {
@@ -94,12 +131,14 @@ onMounted(() => {
   animate();
 
   window.addEventListener("resize", debouncedHandleResize);
-  window.addEventListener('click', handleMouseClick);
+  window.addEventListener("click", handleInteractions);
+  window.addEventListener('mousemove', throttledHandleInteractions);
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", debouncedHandleResize);
-  window.removeEventListener('click', handleMouseClick);
+  window.removeEventListener("click", handleInteractions);
+  window.removeEventListener('mousemove', throttledHandleInteractions);
 });
 </script>
 
