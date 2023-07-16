@@ -68,8 +68,7 @@ function createSegmentWithOutline(radius, widthSegments, heightSegments, phiStar
     side: THREE.DoubleSide,
     opacity: 0.5,
     transparent: true,
-    depthTest: false,
-    deepWrite: false,
+    depthTest: false
   });
 
   // Create the main segment mesh
@@ -94,7 +93,7 @@ onMounted(() => {
     0.1,
     1000
   );
-  camera.position.set(0, 0, 400);
+  camera.position.set(60, 20, 60);
 
   // Create a renderer
   renderer = new THREE.WebGLRenderer();
@@ -104,7 +103,7 @@ onMounted(() => {
   // Create controls
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 100;
-  controls.maxDistance = 500;
+  controls.maxDistance = 400;
   controls.zoomSpeed = 2;
   controls.update();
 
