@@ -34,14 +34,30 @@ function handleInteractions(event) {
   raycaster.setFromCamera(mouse, camera);
 
   // Check for intersection between the ray and the segmentSphere mesh
-  var intersects = [];
-  segmentSpheres.forEach(function (segmentSphere) {
-    var segmentIntersects = raycaster.intersectObject(segmentSphere);
-    intersects.push(...segmentIntersects);
-  });
+  var intersects = raycaster.intersectObjects(segmentSpheres);
 
-  // If there is an intersection, handle the hover event
+  // Reset material for all spheres
+  for (let i = 0; i < segmentSpheres.length; i++) {
+    segmentSpheres[i].material = new THREE.MeshBasicMaterial({
+      color: 0x000000,
+      side: THREE.DoubleSide,
+      opacity: 0.5,
+      transparent: true,
+      depthTest: false,
+    });
+  }
+
+  // If there is an intersection, handle the hover event for the specific sphere
   if (intersects.length > 0) {
+    let hoveredObject = intersects[0].object;
+    hoveredObject.material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+      opacity: 0.5,
+      transparent: true,
+      depthTest: false,
+    });
+
     if (event.type === "mousemove") {
       console.log("Mouse is moving");
     } else if (event.type === "click") {
@@ -50,7 +66,16 @@ function handleInteractions(event) {
   }
 }
 
-function createSegmentWithOutline(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength) {
+function createSegmentWithOutline(
+  radius,
+  widthSegments,
+  heightSegments,
+  phiStart,
+  phiLength,
+  thetaStart,
+  thetaLength,
+  rotationX = 0,
+) {
   // Create a sphere segment geometry
   var segmentSphereGeometry = new THREE.SphereGeometry(
     radius,
@@ -68,11 +93,13 @@ function createSegmentWithOutline(radius, widthSegments, heightSegments, phiStar
     side: THREE.DoubleSide,
     opacity: 0.5,
     transparent: true,
-    depthTest: false
+    depthTest: false,
   });
 
   // Create the main segment mesh
   var segmentMesh = new THREE.Mesh(segmentSphereGeometry, segmentMaterial);
+
+  segmentMesh.rotation.x = rotationX; // Rotate around the x-axis
 
   // Add the group to the scene
   scene.add(segmentMesh);
@@ -80,7 +107,7 @@ function createSegmentWithOutline(radius, widthSegments, heightSegments, phiStar
 }
 
 const debouncedHandleResize = debounce(handleResize, 400);
-const throttledHandleInteractions = throttle(handleInteractions, 40);
+const throttledHandleInteractions = throttle(handleInteractions, 10);
 
 onMounted(() => {
   // Create a scene
@@ -118,7 +145,7 @@ onMounted(() => {
 
   // Create a sphere segment geometry
   // positional x, width, positional y, height
-  createSegmentWithOutline(500, 60, 40, -0.95, 0.3, 1.63, 0.2);
+  createSegmentWithOutline(500, 60, 40, -0.938, 0.3, 1.64, 0.2, 0.02);
 
   // Render the scene
   function animate() {
@@ -131,13 +158,13 @@ onMounted(() => {
 
   window.addEventListener("resize", debouncedHandleResize);
   window.addEventListener("click", handleInteractions);
-  window.addEventListener('mousemove', throttledHandleInteractions);
+  window.addEventListener("mousemove", throttledHandleInteractions);
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", debouncedHandleResize);
   window.removeEventListener("click", handleInteractions);
-  window.removeEventListener('mousemove', throttledHandleInteractions);
+  window.removeEventListener("mousemove", throttledHandleInteractions);
 });
 </script>
 
