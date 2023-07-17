@@ -129,7 +129,7 @@ onMounted(() => {
 
   // Create controls
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 100;
+  //controls.minDistance = 100;
   controls.maxDistance = 400;
   controls.zoomSpeed = 2;
   controls.update();
