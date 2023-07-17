@@ -41,7 +41,7 @@ function handleInteractions(event) {
     segmentSpheres[i].material = new THREE.MeshBasicMaterial({
       color: 0x000000,
       side: THREE.DoubleSide,
-      opacity: 0.5,
+      opacity: 0.2,
       transparent: true,
       depthTest: false,
     });
@@ -66,7 +66,7 @@ function handleInteractions(event) {
   }
 }
 
-function createSegmentWithOutline(
+function createSegment(
   radius,
   widthSegments,
   heightSegments,
@@ -91,7 +91,7 @@ function createSegmentWithOutline(
   var segmentMaterial = new THREE.MeshBasicMaterial({
     color: 0x000000,
     side: THREE.DoubleSide,
-    opacity: 0.5,
+    opacity: 0.2,
     transparent: true,
     depthTest: false,
   });
@@ -129,7 +129,7 @@ onMounted(() => {
 
   // Create controls
   controls = new OrbitControls(camera, renderer.domElement);
-  //controls.minDistance = 100;
+  controls.minDistance = 1;
   controls.maxDistance = 400;
   controls.zoomSpeed = 2;
   controls.update();
@@ -145,7 +145,9 @@ onMounted(() => {
 
   // Create a sphere segment geometry
   // positional x, width, positional y, height
-  createSegmentWithOutline(500, 60, 40, -0.938, 0.3, 1.64, 0.2, 0.02);
+  createSegment(500, 60, 40, -0.938, 0.3, 1.64, 0.2, 0.02);
+  createSegment(500, 60, 40, -0.72, 0.65, 1.27, 0.2);
+  createSegment(500, 60, 40, 0.82, 0.1, 1.61, 0.13);
 
   // Render the scene
   function animate() {
