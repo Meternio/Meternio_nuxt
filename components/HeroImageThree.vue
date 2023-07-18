@@ -171,5 +171,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :id="props.id" ref="threeContainer" class="hero_home_three"></div>
+  <div :id="props.id" ref="threeContainer" class="hero_three"></div>
 </template>
