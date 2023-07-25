@@ -1,12 +1,22 @@
 <script setup>
 const showOverlay = ref(false);
+
+function toggleOverlay() {
+  showOverlay.value = !showOverlay.value;
+}
+
+function toggleOverlayWithDelay() {
+  setTimeout(() => {
+    showOverlay.value = !showOverlay.value;
+  }, 500);
+}
 </script>
 
 <template>
   <header class="menu">
     <button
       class="menu-trigger space-y-2 absolute top-4 right-4 group"
-      @click="showOverlay = !showOverlay"
+      @click="toggleOverlay"
     >
       <span class="block w-8 h-0.5 bg-white"></span>
       <span class="block w-8 h-0.5 bg-white"></span>
@@ -22,16 +32,21 @@ const showOverlay = ref(false);
     >
       <button
         class="menu-close absolute h-6 w-7 top-4 right-4 group"
-        @click="showOverlay = !showOverlay"
+        @click="toggleOverlay"
       >
-        <span class="block w-8 h-0.5 bg-white transition-transform rotate-45 group-hover:rotate-12 absolute"></span>
-        <span class="block w-8 h-0.5 bg-white transition-transform -rotate-45 group-hover:-rotate-12 absolute"></span>
+        <span
+          class="block w-8 h-0.5 bg-white transition-transform rotate-45 group-hover:rotate-12 absolute"
+        ></span>
+        <span
+          class="block w-8 h-0.5 bg-white transition-transform -rotate-45 group-hover:-rotate-12 absolute"
+        ></span>
       </button>
       <div class="menu-overlay-header">
         <NuxtLink
           :to="localePath('/')"
           :aria-label="$t('header.home')"
           class="header-logo"
+          @click="toggleOverlayWithDelay"
         >
           <nuxt-img
             src="img/logo_white.webp"
@@ -46,17 +61,27 @@ const showOverlay = ref(false);
         <NuxtLink
           :to="localePath('/experience')"
           role="menuitem"
+          @click="toggleOverlayWithDelay"
           >{{ $t("header.experience") }}</NuxtLink
         >
-        <NuxtLink :to="localePath('/portfolio')" role="menuitem">{{
-          $t("header.portfolio")
-        }}</NuxtLink>
-        <NuxtLink :to="localePath('/contact')" role="menuitem">{{
-          $t("header.contact")
-        }}</NuxtLink>
-        <NuxtLink :to="localePath('/blog')" role="menuitem">{{
-          $t("header.blog")
-        }}</NuxtLink>
+        <NuxtLink
+          :to="localePath('/portfolio')"
+          role="menuitem"
+          @click="toggleOverlayWithDelay"
+          >{{ $t("header.portfolio") }}</NuxtLink
+        >
+        <NuxtLink
+          :to="localePath('/contact')"
+          role="menuitem"
+          @click="toggleOverlayWithDelay"
+          >{{ $t("header.contact") }}</NuxtLink
+        >
+        <NuxtLink
+          :to="localePath('/blog')"
+          role="menuitem"
+          @click="toggleOverlayWithDelay"
+          >{{ $t("header.blog") }}</NuxtLink
+        >
       </div>
       <div class="menu-overlay-footer text-white flex flex-row gap-2">
         <NuxtLink :to="switchLocalePath('de')">{{
