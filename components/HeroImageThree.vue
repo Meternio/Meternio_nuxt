@@ -6,7 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const props = defineProps({
   image: String,
-  polygons: Array,
+  segments: Array,
 });
 
 const threeContainer = ref(null);
@@ -145,9 +145,9 @@ onMounted(() => {
 
   // Create a sphere segment geometry
   // positional x, width, positional y, height
-  createSegment(500, 60, 40, -0.938, 0.3, 1.64, 0.2, 0.02);
-  createSegment(500, 60, 40, -0.72, 0.65, 1.27, 0.2);
-  createSegment(500, 60, 40, 0.82, 0.1, 1.61, 0.13);
+  for (let i = 0; i < props.segments.length; i++) {
+    createSegment(...props.segments[i].segment);
+  }
 
   // Render the scene
   function animate() {
