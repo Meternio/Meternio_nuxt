@@ -21,6 +21,7 @@ module.exports = {
     },
     fontFamily: {
       roboto: ["roboto", "sans-serif"],
+      pressStart: ["Press_Start_2P", "Tofu"],
     },
   },
 };

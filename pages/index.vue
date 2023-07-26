@@ -1,6 +1,15 @@
+<script setup>
+const tourStarted = ref(false);
+
+function startTour() {
+  tourStarted.value = true;
+}
+</script>
+
 <template>
   <div class="home bg-slate h-[100dvh]">
-    <HeroImageThree
+    <LoadingScreen :start="startTour"/>
+    <HeroImageThree v-if="tourStarted"
       image="/img/main_home3.jpg"
       :segments="[
         {
