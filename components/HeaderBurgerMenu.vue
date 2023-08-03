@@ -50,7 +50,6 @@ function toggleOverlayWithDelay() {
         >
           <nuxt-img
             src="img/logo_white.webp"
-            preload
             height="64"
             class="h-16"
             :alt="$t('header.logo')"

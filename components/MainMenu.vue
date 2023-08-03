@@ -1,0 +1,69 @@
+<script setup>
+import { onMounted, onUnmounted } from "vue";
+
+const props = defineProps({
+  start: Function,
+});
+
+onMounted(() => {
+
+});
+
+onUnmounted(() => {
+
+});
+</script>
+
+<template>
+    <div class="main-menu font-pressStart">
+      <div class="main-menu-additional-info absolute right-20 top-3">
+        <Icon name="mdi:arrow-right-top-bold" class="text-white w-auto h-14" />
+        <p class="text-white text-sm absolute left-0 -translate-x-1/4 top-16">für ein schnelles Navigieren</p>
+      </div>
+
+        <div class="main-menu-title flex gap-3 items-baseline">
+          <h1 class="text-white text-3xl">meternio</h1>
+          <nuxt-img
+            src="img/icon.webp"
+            preload
+            height="64"
+            class="h-16"
+            :alt="$t('header.logo')"
+          />
+        </div>
+        <div class="main-menu-action flex flex-col gap-3 mt-5">
+          <button class="main-menu-action-start text-white font-bold py-2 px-4 rounded-lg bg-primary" @click="props.start">
+            Start
+          </button>
+          <button class="main-menu-action-tutorial text-white font-bold py-2 px-4 rounded-lg bg-light">
+            Tutorial
+          </button>
+        </div>
+    </div>
+</template>
+
+<style scoped lang="less">
+.main-menu {
+  &-action {
+    &-start {
+      box-shadow: 0 0.2em theme("colors.dark");
+
+      &:active {
+        box-shadow: none;
+        position: relative;
+        top: 0.2em;
+      }
+    }
+
+    &-tutorial {
+      box-shadow: 0 0.2em theme("colors.dark");
+
+      &:active {
+        box-shadow: none;
+        position: relative;
+        top: 0.2em;
+      }
+    }
+  }
+}
+</style>

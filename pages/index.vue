@@ -4,12 +4,24 @@ const tourStarted = ref(false);
 function startTour() {
   tourStarted.value = true;
 }
+
+useHead({
+  title: "Meternio",
+  meta: [{ name: "description", content: "Ihr Informatiker aus der Nachbarschaft." }],
+  link: [
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css?family=Press%20Start%202P",
+    },
+  ],
+});
 </script>
 
 <template>
-  <div class="home bg-slate h-[100dvh]">
-    <LoadingScreen :start="startTour"/>
-    <HeroImageThree v-if="tourStarted"
+  <div class="home bg-slate h-[100dvh] flex items-center justify-center">
+    <MainMenu :start="startTour" v-if="!tourStarted"/>
+    <HeroImageThree
+      v-if="tourStarted"
       image="/img/main_home3.jpg"
       :segments="[
         {
