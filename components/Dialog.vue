@@ -12,43 +12,56 @@ const props = defineProps({
 const dialog = ref(null);
 
 function openDialog() {
-  if(props.modal) {
-    dialog.showModal();
+  if (props.modal) {
+    dialog.value.showModal();
   } else {
-    dialog.show();
+    dialog.value.show();
   }
 }
 
-function closeDialog() {
-  dialog.close();
+function closeDialog(event, closeImmediately = false) {
+  if (event.target === dialog.value || closeImmediately) {
+    dialog.value.close();
+  }
 }
 
 onMounted(() => {
-  if(!props.trigger) {
-    return;
+  if (dialog.value) {
+    dialog.value.addEventListener("click", closeDialog);
   }
 
-  props.trigger.addEventListener("click", openDialog);
+  if (props.trigger) {
+    props.trigger.addEventListener("click", openDialog);
+  }
 });
 
 onUnmounted(() => {
-  if(!props.trigger) {
-    return;
+  if (dialog.value) {
+    dialog.value.removeEventListener("click", closeDialog);
   }
 
-  props.trigger.removeEventListener("click", openDialog);
+  if (props.trigger) {
+    props.trigger.removeEventListener("click", openDialog);
+  }
 });
 </script>
 
 <template>
-    <dialog class="dialog relative" ref="dialog">
-      <slot>
-        Error: Da ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.
-      </slot>
-      <button @click="closeDialog" class="absolute right-2 top-2"><Icon name="ic:outline-close" /></button>
-    </dialog>
+  <dialog class="dialog relative overflow-x-hidden" ref="dialog">
+    <slot>
+      <h2>Hmm...</h2>
+      <p>Da ist etwas schief gelaufen. Bitte versuche es später erneut.</p>
+    </slot>
+    <button @click="(e) => closeDialog(e, true)" class="absolute right-px top-px leading-[0]">
+      <Icon name="ic:outline-close" class="h-auto w-6"/>
+    </button>
+  </dialog>
 </template>
 
 <style scoped lang="less">
-
+.dialog {
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
 </style>

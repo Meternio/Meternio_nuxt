@@ -44,10 +44,13 @@ onUnmounted(() => {});
         Tutorial
       </button>
     </div>
-    <Dialog
-      :trigger="tutorialButton"
-      :key="tutorialButton"
-    >
+    <Dialog :trigger="tutorialButton" :key="tutorialButton">
+      <h2>Tutorial</h2>
+      <p>
+        Nutze die Maus, um dich umzusehen. Grau markierte Bereiche sind
+        interaktiv. Bewege die Maus darüber, um Hinweise zu sehen, klicke um zu
+        interagieren und weiterzukommen. Viel Spaß beim Spielen!
+      </p>
     </Dialog>
   </div>
 </template>
