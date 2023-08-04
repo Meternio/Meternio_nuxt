@@ -1,8 +1,22 @@
 <script setup>
 const showOverlay = ref(false);
+const closingAnimation = ref(false);
+const openingAnimation = ref(true);
 
 function toggleOverlay() {
-  showOverlay.value = !showOverlay.value;
+  if (!showOverlay.value) {
+    showOverlay.value = !showOverlay.value;
+    openingAnimation.value = true;
+    setTimeout(() => {
+      openingAnimation.value = false;
+    }, 300);
+  } else {
+    closingAnimation.value = true;
+    setTimeout(() => {
+      closingAnimation.value = false;
+      showOverlay.value = !showOverlay.value;
+    }, 300);
+  }
 }
 
 function toggleOverlayWithDelay() {
@@ -28,6 +42,8 @@ function toggleOverlayWithDelay() {
       class="menu-overlay fixed top-0 left-0 w-full h-full z-50 bg-gray flex items-center justify-center flex-col gap-8 text-2xl"
       :class="{
         hidden: !showOverlay,
+        'animate-container-enter': openingAnimation,
+        'animate-container-exit': closingAnimation,
       }"
     >
       <button
@@ -94,3 +110,17 @@ function toggleOverlayWithDelay() {
     </nav>
   </header>
 </template>
+
+<style scoped lang="less">
+.menu {
+  &-overlay{
+    &.animate-container-enter {
+      animation: openContainerAnimation 0.3s ease-in-out, fullScreenAnimation 0.3s ease-in-out;
+    }
+
+    &.animate-container-exit {
+      animation: closeContainerAnimation 0.3s ease-in-out, smallScreenAnimation 0.3s ease-in-out;
+    }
+  }
+}
+</style>
