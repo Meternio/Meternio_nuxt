@@ -9,7 +9,7 @@ function toggleOverlay() {
     openingAnimation.value = true;
     setTimeout(() => {
       openingAnimation.value = false;
-    }, 300);
+    }, 500);
   } else {
     closingAnimation.value = true;
     setTimeout(() => {
@@ -115,7 +115,7 @@ function toggleOverlayWithDelay() {
 .menu {
   &-overlay{
     &.animate-container-enter {
-      animation: openContainerAnimation 0.3s ease-in-out, fullScreenAnimation 0.3s ease-in-out;
+      animation: openContainerAnimation 0.5s ease-in-out, fullScreenAnimation 0.5s ease-in-out;
     }
 
     &.animate-container-exit {

@@ -17,7 +17,7 @@ function openDialog() {
   openingAnimation.value = true;
   setTimeout(() => {
     openingAnimation.value = false;
-  }, 300);
+  }, 500);
   if (props.modal) {
     dialog.value.showModal();
   } else {
@@ -31,7 +31,7 @@ function closeDialog(event, closeImmediately = false) {
     setTimeout(() => {
       closingAnimation.value = false;
       dialog.value.close();
-    }, 300);
+    }, 200);
   }
 }
 
@@ -89,7 +89,7 @@ onUnmounted(() => {
   &.animate-enter {
     .dialog {
       &-content, &-close {
-        animation: appearAnimation 0.3s ease-in-out;
+        animation: appearAnimation 0.5s ease-in-out;
       }
     }
   }
@@ -97,7 +97,7 @@ onUnmounted(() => {
   &.animate-exit {
     .dialog {
       &-content, &-close {
-        animation: disappearAnimation 0.3s ease-in-out;
+        animation: disappearAnimation 0.2s ease-in-out;
       }
     }
   }
