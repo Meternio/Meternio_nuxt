@@ -13,8 +13,8 @@ function toggleOverlay() {
   } else {
     closingAnimation.value = true;
     setTimeout(() => {
-      closingAnimation.value = false;
       showOverlay.value = !showOverlay.value;
+      closingAnimation.value = false;
     }, 300);
   }
 }
