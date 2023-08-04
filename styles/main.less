@@ -1,12 +1,12 @@
 body {
   margin: 0;
-  font-family: theme('fontFamily.roboto');
+  font-family: theme("fontFamily.roboto");
   font-size: 16px;
 
-  @media screen and (min-width: theme('screens.lg')) {
+  @media screen and (min-width: theme("screens.lg")) {
     font-size: 18px;
   }
-  @media screen and (min-width: theme('screens.2xl')) {
+  @media screen and (min-width: theme("screens.2xl")) {
     font-size: 20px;
   }
 }
@@ -74,6 +74,41 @@ a {
   text-decoration: none;
 }
 
-a:hover, .router-link-active {
-  color: theme('colors.primary');;
+a:hover,
+.router-link-active {
+  color: theme("colors.primary");
+}
+
+@keyframes enterAnimation {
+  0% {
+    opacity: 0;
+    transform-origin: top;
+    transform: scaleY(0) translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform-origin: top;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+@keyframes exitAnimation {
+  0% {
+    opacity: 1;
+    transform-origin: top;
+    transform: scaleY(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform-origin: top;
+    transform: scaleY(0) translateY(-100px);
+  }
+}
+
+.animate-enter {
+  animation: enterAnimation 0.3s ease-in-out;
+}
+
+.animate-exit {
+  animation: exitAnimation 0.3s ease-in-out;
 }

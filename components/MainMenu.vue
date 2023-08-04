@@ -14,8 +14,8 @@ onUnmounted(() => {});
 
 <template>
   <div class="main-menu font-pressStart">
-    <div class="main-menu-additional-info absolute right-20 top-3">
-      <Icon name="mdi:arrow-right-top-bold" class="text-white w-auto h-14" />
+    <div class="main-menu-additional-info absolute right-16 top-5">
+      <Icon name="mdi:arrow-right-top-bold" class="text-white w-auto h-14 animate-bounce" />
       <p class="text-white text-sm absolute left-0 -translate-x-1/4 top-16">
         für ein schnelles Navigieren
       </p>
