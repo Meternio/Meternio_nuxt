@@ -18,7 +18,7 @@ useHead({
 </script>
 
 <template>
-  <div class="home bg-slate h-[100dvh] flex items-center justify-center">
+  <div class="home bg-slate h-screen h-[100dvh] flex items-center justify-center">
     <MainMenu :start="startTour" v-if="!tourStarted"/>
     <HeroImageThree
       v-if="tourStarted"
