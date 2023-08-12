@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxtjs/i18n",
-    "@nuxt/image-edge",
+    "@nuxt/image",
     [
       "@pinia/nuxt",
       {
@@ -31,24 +31,10 @@ export default defineNuxtConfig({
         },
       },
     },
-  },
-  i18n: {
-    locales: [
-      {
-        code: "de",
-        file: "@/locales/de.json",
-      },
-      {
-        code: "en",
-        file: "@/locales/en.json",
-      },
-    ],
-    defaultLocale: "de",
-    vueI18n: {
-      fallbackLocale: "de",
-      messages: {
-        de,
-        en,
+    server: {
+      fs: {
+        // Allow serving files from one level up to the project root
+        allow: ["C:/Users/Florian/node_modules/@iconify"],
       },
     },
   },

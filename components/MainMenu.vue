@@ -6,6 +6,11 @@ const props = defineProps({
 });
 
 const tutorialButton = ref(null);
+const iconLoading = ref(true);
+
+function onIconLoad() {
+  iconLoading.value = false;
+}
 
 onMounted(() => {});
 
@@ -22,12 +27,15 @@ onUnmounted(() => {});
     </div>
     <div class="main-menu-title flex gap-3 items-baseline">
       <h1 class="text-white text-3xl">meternio</h1>
+      <SkeletonLoader type="circle" class="w-[71px] h-16" v-if="iconLoading"/>
       <nuxt-img
         src="img/icon.webp"
         preload
         height="64"
-        class="h-16"
+        class="h-16 transition-opacity duration-300"
+        :class="iconLoading ? 'h-0 w-0 opacity-0' : 'opacity-100'"
         :alt="$t('header.logo')"
+        @load="onIconLoad"
       />
     </div>
     <div class="main-menu-action flex flex-col gap-3 mt-5">
