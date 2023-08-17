@@ -1,5 +1,8 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import { useDialogStore } from '@/stores/dialogStore';
+
+const dialogStore = useDialogStore();
 
 const props = defineProps({
   trigger: Object,
@@ -10,58 +13,36 @@ const props = defineProps({
 });
 
 const dialog = ref(null);
-const closingAnimation = ref(false);
-const openingAnimation = ref(true);
-
-function openDialog() {
-  openingAnimation.value = true;
-  setTimeout(() => {
-    openingAnimation.value = false;
-  }, 500);
-  if (props.modal) {
-    dialog.value.showModal();
-  } else {
-    dialog.value.show();
-  }
-}
-
-function closeDialog(event, closeImmediately = false) {
-  if (event.target === dialog.value || closeImmediately) {
-    closingAnimation.value = true;
-    setTimeout(() => {
-      closingAnimation.value = false;
-      dialog.value.close();
-    }, 200);
-  }
-}
 
 onMounted(() => {
   if (dialog.value) {
-    dialog.value.addEventListener("click", closeDialog);
+    dialogStore.addDialog(dialog.value);
+    dialog.value.addEventListener("click", (e) => dialogStore.closeDialog(dialog.value, e));
   }
 
   if (props.trigger) {
-    props.trigger.addEventListener("click", openDialog);
+    props.trigger.addEventListener("click", () => dialogStore.openDialog(dialog.value));
   }
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (dialog.value) {
-    dialog.value.removeEventListener("click", closeDialog);
+    dialogStore.removeDialog(dialog.value);
+    dialog.value.removeEventListener("click", dialogStore.closeDialog);
   }
 
   if (props.trigger) {
-    props.trigger.removeEventListener("click", openDialog);
+    props.trigger.removeEventListener("click", dialogStore.openDialog);
   }
 });
 </script>
 
 <template>
   <dialog
-    class="dialog relative overflow-x-hidden rounded-lg"
+    class="dialog relative overflow-x-hidden rounded-lg container lg:max-w-3xl"
     :class="{
-      'animate-enter': openingAnimation,
-      'animate-exit': closingAnimation,
+      'animate-enter': dialogStore.openingAnimation,
+      'animate-exit': dialogStore.closingAnimation,
     }"
     ref="dialog"
   >
@@ -72,7 +53,7 @@ onUnmounted(() => {
       </slot>
     </div>
     <button
-      @click="(e) => closeDialog(e, true)"
+      @click="(e) => dialogStore.closeDialog(dialog, e, true)"
       class="dialog-close absolute right-px top-px leading-[0]"
     >
       <Icon name="ic:outline-close" class="h-auto w-6" />

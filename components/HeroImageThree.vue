@@ -3,6 +3,10 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { debounce, throttle } from "@/functions/main";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { useDialogStore } from '@/stores/dialogStore';
+
+const dialogStore = useDialogStore();
+const dialog = ref(null);
 
 const props = defineProps({
   image: String,
@@ -62,6 +66,7 @@ function handleInteractions(event) {
       console.log("Mouse is moving");
     } else if (event.type === "click") {
       console.log("Mouse was clicked");
+      dialogStore.openDialog(dialog.value.$el);
     }
   }
 }
@@ -74,7 +79,7 @@ function createSegment(
   phiLength,
   thetaStart,
   thetaLength,
-  rotationX = 0,
+  rotationX = 0
 ) {
   // Create a sphere segment geometry
   var segmentSphereGeometry = new THREE.SphereGeometry(
@@ -172,4 +177,10 @@ onUnmounted(() => {
 
 <template>
   <div :id="props.id" ref="threeContainer" class="hero_three"></div>
+  <Dialog ref="dialog">
+    <h2>test!</h2>
+    <p>
+      Test
+    </p>
+  </Dialog>
 </template>
