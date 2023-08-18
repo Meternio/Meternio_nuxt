@@ -1,12 +1,13 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import { debounce, throttle } from "@/functions/main";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { useDialogStore } from '@/stores/dialogStore';
 
 const dialogStore = useDialogStore();
-const dialog = ref(null);
+const router = useRouter();
 
 const props = defineProps({
   image: String,
@@ -63,10 +64,18 @@ function handleInteractions(event) {
     });
 
     if (event.type === "mousemove") {
-      console.log("Mouse is moving");
+      //console.log("Mouse is moving");
     } else if (event.type === "click") {
-      console.log("Mouse was clicked");
-      dialogStore.openDialog(dialog.value.$el);
+      //console.log("Mouse was clicked");
+      if(hoveredObject.dialogId && document.querySelector(`#${hoveredObject.dialogId}`)){
+        dialogStore.openDialog(document.querySelector(`#${hoveredObject.dialogId}`));
+        return;
+      }
+
+      if(hoveredObject.href){
+        router.push(hoveredObject.href);
+        return;
+      }
     }
   }
 }
@@ -79,7 +88,9 @@ function createSegment(
   phiLength,
   thetaStart,
   thetaLength,
-  rotationX = 0
+  rotationX,
+  dialogId = null,
+  href = null,
 ) {
   // Create a sphere segment geometry
   var segmentSphereGeometry = new THREE.SphereGeometry(
@@ -105,6 +116,9 @@ function createSegment(
   var segmentMesh = new THREE.Mesh(segmentSphereGeometry, segmentMaterial);
 
   segmentMesh.rotation.x = rotationX; // Rotate around the x-axis
+
+  segmentMesh.dialogId = dialogId;
+  segmentMesh.href = href;
 
   // Add the group to the scene
   scene.add(segmentMesh);
@@ -151,7 +165,7 @@ onMounted(() => {
   // Create a sphere segment geometry
   // positional x, width, positional y, height
   for (let i = 0; i < props.segments.length; i++) {
-    createSegment(...props.segments[i].segment);
+    createSegment(...props.segments[i].segment, props.segments[i]?.dialogId, props.segments[i]?.href);
   }
 
   // Render the scene
@@ -177,10 +191,5 @@ onUnmounted(() => {
 
 <template>
   <div :id="props.id" ref="threeContainer" class="hero_three"></div>
-  <Dialog ref="dialog">
-    <h2>test!</h2>
-    <p>
-      Test
-    </p>
-  </Dialog>
+  <slot></slot>
 </template>

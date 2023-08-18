@@ -1,6 +1,3 @@
-import de from "./locales/de.json";
-import en from "./locales/en.json";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -20,6 +17,10 @@ export default defineNuxtConfig({
     ],
     "nuxt-icon",
   ],
+  i18n: {
+    locales: ["de", "en"], // used in URL path prefix
+    defaultLocale: "de", // default locale of your project for Nuxt pages and routings
+  },
   css: ["@/styles/main.less"],
   vite: {
     css: {
