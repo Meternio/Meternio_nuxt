@@ -73,6 +73,11 @@ function handleInteractions(event) {
       }
 
       if(hoveredObject.href){
+        if(hoveredObject.href === "/"){
+          window.location.reload();
+          return;
+        }
+
         router.push(hoveredObject.href);
         return;
       }

@@ -74,10 +74,10 @@ function toggleOverlayWithDelay() {
       </div>
       <div class="menu-overlay-content text-white flex flex-col text-center">
         <NuxtLink
-          :to="localePath('/experience')"
+          :to="localePath('/about')"
           role="menuitem"
           @click="toggleOverlayWithDelay"
-          >{{ $t("header.experience") }}</NuxtLink
+          >{{ $t("header.about") }}</NuxtLink
         >
         <NuxtLink
           :to="localePath('/portfolio')"
