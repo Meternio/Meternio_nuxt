@@ -44,7 +44,7 @@ onUnmounted(() => {});
         class="main-menu-action-start text-white font-bold py-2 px-4 rounded-lg bg-primary"
         @click="props.start"
       >
-        Start
+        Virtuelles Büro
       </button>
       <button
         ref="tutorialButton"

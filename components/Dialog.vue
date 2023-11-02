@@ -39,7 +39,7 @@ onBeforeUnmount(() => {
 
 <template>
   <dialog
-    class="dialog relative overflow-x-hidden rounded-lg container lg:max-w-3xl"
+    class="dialog relative overflow-x-hidden rounded-lg container lg:max-w-3xl py-5"
     :class="{
       'animate-enter': dialogStore.openingAnimation,
       'animate-exit': dialogStore.closingAnimation,
