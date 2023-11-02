@@ -12,9 +12,9 @@ function onIconLoad() {
   iconLoading.value = false;
 }
 
-onMounted(() => {});
+onMounted(() => { });
 
-onUnmounted(() => {});
+onUnmounted(() => { });
 </script>
 
 <template>
@@ -27,37 +27,23 @@ onUnmounted(() => {});
     </div>
     <div class="main-menu-title flex gap-3 items-baseline">
       <h1 class="text-white text-3xl">meternio</h1>
-      <SkeletonLoader type="circle" class="w-[71px] h-16 -mr-3" v-if="iconLoading"/>
-      <nuxt-img
-        src="img/icon.webp"
-        preload
-        loading="auto"
-        height="64"
-        class="h-16 transition-opacity duration-300"
-        :class="iconLoading ? 'h-0 w-0 opacity-0' : 'opacity-100'"
-        :alt="$t('header.logo')"
-        @load="onIconLoad"
-      />
+      <SkeletonLoader type="circle" class="w-[71px] h-16 -mr-3" v-if="iconLoading" />
+      <nuxt-img src="img/icon.webp" preload loading="auto" height="64" class="h-16 transition-opacity duration-300"
+        :class="iconLoading ? 'h-0 w-0 opacity-0' : 'opacity-100'" :alt="$t('header.logo')" @load="onIconLoad" />
     </div>
     <div class="main-menu-action flex flex-col gap-3 mt-5">
-      <button
-        class="main-menu-action-start text-white font-bold py-2 px-4 rounded-lg bg-primary"
-        @click="props.start"
-      >
+      <button class="main-menu-action-start text-white font-bold py-2 px-4 rounded-lg bg-primary" @click="props.start">
         Virtuelles Büro
       </button>
-      <button
-        ref="tutorialButton"
-        class="main-menu-action-tutorial text-white font-bold py-2 px-4 rounded-lg bg-light"
-      >
+      <button ref="tutorialButton" class="main-menu-action-tutorial text-white font-bold py-2 px-4 rounded-lg bg-light">
         Tutorial
       </button>
     </div>
     <Dialog :trigger="tutorialButton" :key="tutorialButton">
       <h2>Tutorial</h2>
       <p>
-        Nutze die Maus, um dich umzusehen. Grau markierte Bereiche sind
-        interaktiv. Bewege die Maus darüber, um Hinweise zu sehen, klicke um zu
+        Nutze die Maus oder deine Hand, um dich umzusehen. Grau markierte Bereiche sind
+        interaktiv. Klicke um zu
         interagieren und weiterzukommen. Viel Spaß beim Spielen!
       </p>
     </Dialog>
