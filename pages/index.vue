@@ -5,7 +5,10 @@ const dialogStore = useDialogStore();
 const tourStarted = ref(false);
 const homeDialog = ref(null);
 
-function startTour() {
+function startTour(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
   tourStarted.value = true;
 }
 
