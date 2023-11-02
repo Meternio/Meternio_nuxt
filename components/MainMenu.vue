@@ -44,7 +44,7 @@ onUnmounted(() => { });
       <p>
         Nutze die Maus oder deine Hand, um dich umzusehen. Grau markierte Bereiche sind
         interaktiv. Klicke um zu
-        interagieren und weiterzukommen. Viel Spaß beim Spielen!
+        interagieren und weiterzukommen. Mit dem Mausrad oder zwei Fingern kannst du hinein und heraus zoomen. Viel Spaß beim Spielen!
       </p>
     </Dialog>
   </div>

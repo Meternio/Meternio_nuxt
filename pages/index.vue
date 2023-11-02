@@ -73,7 +73,7 @@ useHead({
             <a href="https://coop.ch" class="font-bold" target="_blank">coop.ch</a><br>
             Bei coop.ch spiele ich eine Schlüsselrolle als Lead Frontend Developer. Diese Website ist das Aushängeschild
             eines der führenden Unternehmen im E-Commerce. Ich arbeite daran, die Benutzererfahrung zu optimieren und
-            innovative Frontend-Lösungen zu entwickeln. Auch hier bin ich als CTO Tätig und somit verantwortlich für das
+            innovative Frontend-Lösungen zu entwickeln. Auch hier bin ich als CTO Tätig für die Firma Raffiniert Media AG und somit verantwortlich für das
             Management und Weiterentwicklung der Webseite.
           </li>
           <li>
