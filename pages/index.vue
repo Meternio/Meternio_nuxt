@@ -61,7 +61,7 @@ useHead({
     ]">
       <Dialog id="portfolioDialog">
         <h2 tabindex="0">Portofolio</h2>
-        <p>In meinem Portfolio findest du eine Auswahl an Projekten, an denen ich in den letzten Jahren gearbeitet habe.
+        <p class="mt-1">In meinem Portfolio findest du eine Auswahl an Projekten, an denen ich in den letzten Jahren gearbeitet habe.
           Diese Projekte repräsentieren meine Leidenschaft für innovative Technologie und meine Fähigkeit, vielfältige
           Herausforderungen anzunehmen. Hier sind einige meiner herausragenden Referenzen:</p>
         <ul class="list-disc m-0">
@@ -105,7 +105,7 @@ useHead({
       </Dialog>
       <Dialog id="aboutDialog">
         <h2 tabindex="0">Über Mich</h2>
-        <p>Hallo, ich bin Florian Hitz, und ich möchte mich kurz vorstellen. Als Entwickler mit über 10 Jahren
+        <p class="mt-1">>Hallo, ich bin Florian Hitz, und ich möchte mich kurz vorstellen. Als Entwickler mit über 10 Jahren
           Berufserfahrung bin ich leidenschaftlich daran interessiert, innovative Lösungen zu entwickeln und die digitale
           Welt zu gestalten. Gegenwärtig arbeite ich in drei verschiedenen spannenden Positionen:</p>
         <ul class="list-disc m-0">
@@ -148,7 +148,7 @@ useHead({
       </Dialog>
       <Dialog id="blogDialog">
         <h2 tabindex="0">Willkommen zu meinem Blog!</h2>
-        <p>
+        <p class="mt-1">
           In meinem Blog findest du einen Einblick in meine Welt als erfahrener Entwickler und Unternehmer. Hier teile
           ich nicht nur meine Arbeiten und Projekte, sondern auch meine kontinuierlichen Lernfortschritte und aktuellen
           Umsetzungen.
@@ -169,7 +169,7 @@ useHead({
       </Dialog>
       <Dialog id="contactDialog">
         <h2 tabindex="0">Kontaktiere mich für Aufträge</h2>
-        <p>
+        <p class="mt-1">
           Ich freue mich darauf, von dir zu hören und darüber zu sprechen, wie ich dir bei deinem nächsten Projekt helfen
           kann. Egal, ob du eine maßgeschneiderte Softwarelösung benötigst, Unterstützung bei der Umsetzung deiner Ideen
           suchst oder einfach nur Fragen hast, zögere nicht, mich zu kontaktieren.
@@ -193,7 +193,7 @@ useHead({
     </Dialog>
     <Dialog id="homeDialog" ref="homeDialog">
       <h2 tabindex="0">Virutelles Büro verlassen</h2>
-      <p>Willst du das Virutelle Büro verlassen?</p>
+      <p class="mt-1">Willst du das Virutelle Büro verlassen?</p>
       <a @click="(e) => dialogStore.closeDialog(homeDialog.$el, e, true)"
         class="text-white hover:text-white hover:bg-dark font-bold py-2 px-4 rounded-lg bg-primary mt-3 inline-block">Bleiben</a>
       <a class="underline font-bold py-2 px-4 rounded-lg mt-3 inline-block" @click="closeDialog">
