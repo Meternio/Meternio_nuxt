@@ -31,6 +31,9 @@ export const useDialogStore = defineStore("dialog", () => {
   }
 
   function closeDialog(dialog, event, closeImmediately = false, callback = () => {}) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
     if (event.target === dialog || closeImmediately) {
       this.closingAnimation = true;
       setTimeout(() => {
