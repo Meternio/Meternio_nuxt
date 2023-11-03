@@ -8,9 +8,14 @@ import { useDialogStore } from '@/stores/dialogStore';
 
 const dialogStore = useDialogStore();
 const router = useRouter();
+let cameraAnimationIndex = 0;
+
 
 const props = defineProps({
   image: String,
+  cameraPosition: Array,
+  cameraRotation: Array,
+  cameraAnimationPositionAndRotation: Array,
   segments: Array,
 });
 
@@ -18,6 +23,56 @@ const threeContainer = ref(null);
 
 let camera, renderer, scene, controls, sphereMesh;
 const segmentSpheres = [];
+
+function cameraAnimation(){
+  if(
+    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][0] === Math.round(camera.position.x) &&
+    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][1] === Math.round(camera.position.y) &&
+    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][2] === Math.round(camera.position.z) &&
+    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][3] === Math.round((camera.rotation.x + Number.EPSILON) * 100) / 100 &&
+    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][4] === Math.round((camera.rotation.y + Number.EPSILON) * 100) / 100 &&
+    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][5] === Math.round((camera.rotation.z + Number.EPSILON) * 100) / 100
+  ){
+    cameraAnimationIndex++;
+    return;
+  }
+
+  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][0] > Math.round(camera.position.x)){
+    camera.position.x += 1;
+  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][0] < Math.round(camera.position.x)){
+    camera.position.x -= 1;
+  }
+
+  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][1] > Math.round(camera.position.y)){
+    camera.position.y += 1;
+  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][1] < Math.round(camera.position.y)){
+    camera.position.y -= 1;
+  }
+
+  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][2] > Math.round(camera.position.z)){
+    camera.position.z += 1;
+  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][2] < Math.round(camera.position.z)){
+    camera.position.z -= 1;
+  }
+
+  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][3] > Math.round((camera.rotation.x + Number.EPSILON) * 100) / 100){
+    camera.rotation.x += 0.005;
+  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][3] < Math.round((camera.rotation.x + Number.EPSILON) * 100) / 100){
+    camera.rotation.x -= 0.005;
+  }
+
+  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][4] > Math.round((camera.rotation.y + Number.EPSILON) * 100) / 100){
+    camera.rotation.y += 0.005;
+  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][4] < Math.round((camera.rotation.y + Number.EPSILON) * 100) / 100){
+    camera.rotation.y -= 0.005;
+  }
+
+  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][5] > Math.round((camera.rotation.z + Number.EPSILON) * 100) / 100){
+    camera.rotation.z += 0.005;
+  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][5] < Math.round((camera.rotation.z + Number.EPSILON) * 100) / 100){
+    camera.rotation.z -= 0.005;
+  }
+}
 
 function handleResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -132,6 +187,7 @@ function createSegment(
 
 const debouncedHandleResize = debounce(handleResize, 400);
 const throttledHandleInteractions = throttle(handleInteractions, 10);
+const throttledCameraAnimation = throttle(cameraAnimation, 0);
 
 onMounted(() => {
   // Create a scene
@@ -144,8 +200,19 @@ onMounted(() => {
     0.1,
     1000
   );
-  camera.position.set(60, 20, 60);
 
+  if(props.cameraPosition){
+    camera.position.set(...props.cameraPosition);
+  } else {
+    camera.position.set(60, 20, 60);
+  }
+
+  if(props.cameraRotation){
+    camera.rotation.set(...props.cameraRotation);
+  } else {
+    camera.rotation.set(0, 0, 0);
+  }
+  
   // Create a renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -176,6 +243,16 @@ onMounted(() => {
   // Render the scene
   function animate() {
     requestAnimationFrame(animate);
+    
+    if(props.cameraAnimationPositionAndRotation && props.cameraAnimationPositionAndRotation.length > cameraAnimationIndex){
+        controls.enabled = false;
+        throttledCameraAnimation();
+    } else if(controls.enabled === false){
+        camera.position.set(props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][0], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][1], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][2]);
+        camera.rotation.set(props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][3], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][4], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][5]);
+        controls.enabled = true;
+        controls.update();
+    }
 
     renderer.render(scene, camera);
   }

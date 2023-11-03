@@ -58,6 +58,11 @@ useHead({
         dialogId: 'homeDialog',
         segment: [500, 60, 40, 0.4, 0.3, 1.41, 0.7, 0],
       }
+    ]"
+    :camera-position="[0, -400, 0]"
+    :camera-rotation="[100, 200, 300]"
+    :camera-animation-position-and-rotation="[
+      [0, 0, 0, 0, 0, 0]
     ]">
       <Dialog id="portfolioDialog">
         <h2 tabindex="0">Portofolio</h2>
@@ -105,7 +110,7 @@ useHead({
       </Dialog>
       <Dialog id="aboutDialog">
         <h2 tabindex="0">Über Mich</h2>
-        <p class="mt-1">>Hallo, ich bin Florian Hitz, und ich möchte mich kurz vorstellen. Als Entwickler mit über 10 Jahren
+        <p class="mt-1">Hallo, ich bin Florian Hitz, und ich möchte mich kurz vorstellen. Als Entwickler mit über 10 Jahren
           Berufserfahrung bin ich leidenschaftlich daran interessiert, innovative Lösungen zu entwickeln und die digitale
           Welt zu gestalten. Gegenwärtig arbeite ich in drei verschiedenen spannenden Positionen:</p>
         <ul class="list-disc m-0">
