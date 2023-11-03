@@ -3,75 +3,32 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { debounce, throttle } from "@/functions/main";
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import CameraControls from 'camera-controls';
 import { useDialogStore } from '@/stores/dialogStore';
 
 const dialogStore = useDialogStore();
 const router = useRouter();
-let cameraAnimationIndex = 0;
-
 
 const props = defineProps({
   image: String,
   cameraPosition: Array,
   cameraRotation: Array,
-  cameraAnimationPositionAndRotation: Array,
+  standupAnimation: Boolean,
   segments: Array,
 });
 
 const threeContainer = ref(null);
 
-let camera, renderer, scene, controls, sphereMesh;
+let camera, renderer, scene, controls, sphereMesh, clock;
 const segmentSpheres = [];
 
-function cameraAnimation(){
-  if(
-    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][0] === Math.round(camera.position.x) &&
-    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][1] === Math.round(camera.position.y) &&
-    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][2] === Math.round(camera.position.z) &&
-    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][3] === Math.round((camera.rotation.x + Number.EPSILON) * 100) / 100 &&
-    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][4] === Math.round((camera.rotation.y + Number.EPSILON) * 100) / 100 &&
-    props.cameraAnimationPositionAndRotation[cameraAnimationIndex][5] === Math.round((camera.rotation.z + Number.EPSILON) * 100) / 100
-  ){
-    cameraAnimationIndex++;
-    return;
-  }
-
-  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][0] > Math.round(camera.position.x)){
-    camera.position.x += 1;
-  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][0] < Math.round(camera.position.x)){
-    camera.position.x -= 1;
-  }
-
-  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][1] > Math.round(camera.position.y)){
-    camera.position.y += 1;
-  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][1] < Math.round(camera.position.y)){
-    camera.position.y -= 1;
-  }
-
-  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][2] > Math.round(camera.position.z)){
-    camera.position.z += 1;
-  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][2] < Math.round(camera.position.z)){
-    camera.position.z -= 1;
-  }
-
-  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][3] > Math.round((camera.rotation.x + Number.EPSILON) * 100) / 100){
-    camera.rotation.x += 0.005;
-  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][3] < Math.round((camera.rotation.x + Number.EPSILON) * 100) / 100){
-    camera.rotation.x -= 0.005;
-  }
-
-  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][4] > Math.round((camera.rotation.y + Number.EPSILON) * 100) / 100){
-    camera.rotation.y += 0.005;
-  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][4] < Math.round((camera.rotation.y + Number.EPSILON) * 100) / 100){
-    camera.rotation.y -= 0.005;
-  }
-
-  if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][5] > Math.round((camera.rotation.z + Number.EPSILON) * 100) / 100){
-    camera.rotation.z += 0.005;
-  } else if(props.cameraAnimationPositionAndRotation[cameraAnimationIndex][5] < Math.round((camera.rotation.z + Number.EPSILON) * 100) / 100){
-    camera.rotation.z -= 0.005;
-  }
+async function standupAnimation() {
+  controls.enabled = false;
+  await controls.truck(0, 450, false);
+  await controls.rotateTo(Math.PI * 0.5, Math.PI, false);
+  await controls.rotateTo(Math.PI * 0.5, Math.PI * 0.5, true);
+  await controls.truck(0, -450, true);
+  controls.enabled = true;
 }
 
 function handleResize() {
@@ -122,13 +79,13 @@ function handleInteractions(event) {
       //console.log("Mouse is moving");
     } else if (event.type === "click") {
       //console.log("Mouse was clicked");
-      if(hoveredObject.dialogId && document.querySelector(`#${hoveredObject.dialogId}`)){
+      if (hoveredObject.dialogId && document.querySelector(`#${hoveredObject.dialogId}`)) {
         dialogStore.openDialog(document.querySelector(`#${hoveredObject.dialogId}`));
         return;
       }
 
-      if(hoveredObject.href){
-        if(hoveredObject.href === "/"){
+      if (hoveredObject.href) {
+        if (hoveredObject.href === "/") {
           window.location.reload();
           return;
         }
@@ -187,7 +144,6 @@ function createSegment(
 
 const debouncedHandleResize = debounce(handleResize, 400);
 const throttledHandleInteractions = throttle(handleInteractions, 10);
-const throttledCameraAnimation = throttle(cameraAnimation, 0);
 
 onMounted(() => {
   // Create a scene
@@ -201,29 +157,36 @@ onMounted(() => {
     1000
   );
 
-  if(props.cameraPosition){
+  if (props.cameraPosition) {
     camera.position.set(...props.cameraPosition);
   } else {
-    camera.position.set(60, 20, 60);
+    camera.position.set(0, 0, 0);
   }
 
-  if(props.cameraRotation){
+  if (props.cameraRotation) {
     camera.rotation.set(...props.cameraRotation);
   } else {
     camera.rotation.set(0, 0, 0);
   }
-  
+
   // Create a renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   threeContainer.value.appendChild(renderer.domElement);
 
+  // Create a clock
+  clock = new THREE.Clock();
+
   // Create controls
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 1;
-  controls.maxDistance = 400;
-  controls.zoomSpeed = 2;
-  controls.update();
+  CameraControls.install({ THREE: THREE });
+  controls = new CameraControls(camera, renderer.domElement);
+  controls.distance = 50;
+  controls.maxDistance = 200;
+  controls.minDistance = 10;
+
+  if (props.standupAnimation) {
+    standupAnimation();
+  }
 
   // Create a sphere for the 360 View
   var sphereGeometry = new THREE.SphereGeometry(500, 60, 40);
@@ -242,17 +205,9 @@ onMounted(() => {
 
   // Render the scene
   function animate() {
+    controls.update(clock.getDelta());
+
     requestAnimationFrame(animate);
-    
-    if(props.cameraAnimationPositionAndRotation && props.cameraAnimationPositionAndRotation.length > cameraAnimationIndex){
-        controls.enabled = false;
-        throttledCameraAnimation();
-    } else if(controls.enabled === false){
-        camera.position.set(props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][0], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][1], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][2]);
-        camera.rotation.set(props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][3], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][4], props.cameraAnimationPositionAndRotation[props.cameraAnimationPositionAndRotation.length - 1][5]);
-        controls.enabled = true;
-        controls.update();
-    }
 
     renderer.render(scene, camera);
   }

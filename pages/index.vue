@@ -59,11 +59,7 @@ useHead({
         segment: [500, 60, 40, 0.4, 0.3, 1.41, 0.7, 0],
       }
     ]"
-    :camera-position="[0, -400, 0]"
-    :camera-rotation="[100, 200, 300]"
-    :camera-animation-position-and-rotation="[
-      [0, 0, 0, 0, 0, 0]
-    ]">
+    :standupAnimation="true">
       <Dialog id="portfolioDialog">
         <h2 tabindex="0">Portofolio</h2>
         <p class="mt-1">In meinem Portfolio findest du eine Auswahl an Projekten, an denen ich in den letzten Jahren gearbeitet habe.
