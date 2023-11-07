@@ -8,6 +8,7 @@ import { useDialogStore } from '@/stores/dialogStore';
 
 const dialogStore = useDialogStore();
 const router = useRouter();
+const emit = defineEmits();
 
 const props = defineProps({
   image: String,
@@ -22,13 +23,28 @@ const threeContainer = ref(null);
 let camera, renderer, scene, controls, sphereMesh, clock;
 const segmentSpheres = [];
 
+function finishedLoading() {
+  if (props.standupAnimation) {
+    standupAnimation();
+  }
+}
+
 async function standupAnimation() {
   controls.enabled = false;
-  await controls.truck(0, 450, false);
-  await controls.rotateTo(Math.PI * 0.5, Math.PI, false);
   await controls.rotateTo(Math.PI * 0.5, Math.PI * 0.5, true);
-  await controls.truck(0, -450, true);
+  await controls.elevate(450, true);
+  await controls.rotate(Math.PI * 0.2, 0, true);
+  await controls.rotate(-Math.PI * 0.4, 0, true);
+  await controls.rotate(Math.PI * 0.2, 0, true);
   controls.enabled = true;
+}
+
+async function leaveAnimation() {
+  controls.enabled = false;
+  await controls.lookInDirectionOf(-41, -10, 26, true);
+  await controls.forward(400, true);
+  controls.enabled = true;
+  emit('leaveTour');
 }
 
 function handleResize() {
@@ -84,6 +100,14 @@ function handleInteractions(event) {
         return;
       }
 
+      if (hoveredObject.functionToCall) {
+        if (hoveredObject.functionToCall === 'leaveAnimation') {
+          leaveAnimation();
+        }
+
+        return;
+      }
+
       if (hoveredObject.href) {
         if (hoveredObject.href === "/") {
           window.location.reload();
@@ -108,6 +132,7 @@ function createSegment(
   rotationX,
   dialogId = null,
   href = null,
+  functionToCall = null,
 ) {
   // Create a sphere segment geometry
   var segmentSphereGeometry = new THREE.SphereGeometry(
@@ -136,6 +161,7 @@ function createSegment(
 
   segmentMesh.dialogId = dialogId;
   segmentMesh.href = href;
+  segmentMesh.functionToCall = functionToCall;
 
   // Add the group to the scene
   scene.add(segmentMesh);
@@ -183,10 +209,8 @@ onMounted(() => {
   controls.distance = 50;
   controls.maxDistance = 200;
   controls.minDistance = 10;
-
-  if (props.standupAnimation) {
-    standupAnimation();
-  }
+  controls.elevate(-450, false);
+  controls.rotateTo(Math.PI * 0.5, Math.PI * 0.7, false);
 
   // Create a sphere for the 360 View
   var sphereGeometry = new THREE.SphereGeometry(500, 60, 40);
@@ -200,7 +224,7 @@ onMounted(() => {
   // Create a sphere segment geometry
   // positional x, width, positional y, height
   for (let i = 0; i < props.segments.length; i++) {
-    createSegment(...props.segments[i].segment, props.segments[i]?.dialogId, props.segments[i]?.href);
+    createSegment(...props.segments[i].segment, props.segments[i]?.dialogId, props.segments[i]?.href, props.segments[i]?.functionToCall);
   }
 
   // Render the scene
@@ -227,6 +251,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <LoadingScreen @loading-finished="finishedLoading"/>
   <div :id="props.id" ref="threeContainer" class="hero_three"></div>
   <slot></slot>
 </template>

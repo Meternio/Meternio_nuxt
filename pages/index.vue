@@ -1,9 +1,5 @@
 <script setup>
-import { useDialogStore } from '@/stores/dialogStore';
-
-const dialogStore = useDialogStore();
 const tourStarted = ref(false);
-const homeDialog = ref(null);
 
 function startTour(e) {
   e.preventDefault();
@@ -12,12 +8,8 @@ function startTour(e) {
   tourStarted.value = true;
 }
 
-function closeTour() {
+function leaveTour() {
   tourStarted.value = false;
-}
-
-function closeDialog(e) {
-  dialogStore.closeDialog(homeDialog.value.$el, e, true, closeTour);
 }
 
 useHead({
@@ -37,7 +29,7 @@ useHead({
 <template>
   <div class="home bg-slate h-screen h-[100dvh] flex items-center justify-center">
     <MainMenu :start="startTour" v-if="!tourStarted" />
-    <HeroImageThree v-if="tourStarted" image="/img/main_home_8.jpg" :segments="[
+    <HeroImageThree v-if="tourStarted" @leave-tour="leaveTour" image="/img/main_home_8.jpg" :segments="[
       {
         dialogId: 'portfolioDialog',
         segment: [500, 60, 40, -0.938, 0.3, 1.64, 0.2, 0.02],
@@ -55,7 +47,7 @@ useHead({
         segment: [500, 60, 40, -0.6, 0.1, 1.75, 0.13, 0.02],
       },
       {
-        dialogId: 'homeDialog',
+        functionToCall: 'leaveAnimation',
         segment: [500, 60, 40, 0.4, 0.3, 1.41, 0.7, 0],
       }
     ]"
@@ -191,14 +183,6 @@ useHead({
         <NuxtLink
           class="text-white hover:text-white hover:bg-dark font-bold py-2 px-4 rounded-lg bg-primary mt-3 inline-block"
         :to="localePath('/contact')">Zum Kontakt</NuxtLink>
-    </Dialog>
-    <Dialog id="homeDialog" ref="homeDialog">
-      <h2 tabindex="0">Virutelles Büro verlassen</h2>
-      <p class="mt-1">Willst du das Virutelle Büro verlassen?</p>
-      <a @click="(e) => dialogStore.closeDialog(homeDialog.$el, e, true)"
-        class="text-white hover:text-white hover:bg-dark font-bold py-2 px-4 rounded-lg bg-primary mt-3 inline-block">Bleiben</a>
-      <a class="underline font-bold py-2 px-4 rounded-lg mt-3 inline-block" @click="closeDialog">
-        Verlassen</a>
     </Dialog>
   </HeroImageThree>
 </div></template>
