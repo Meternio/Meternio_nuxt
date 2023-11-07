@@ -19,11 +19,13 @@ const props = defineProps({
 });
 
 const threeContainer = ref(null);
+const isLoadingScreen = ref(true);
 
-let camera, renderer, scene, controls, sphereMesh, clock;
+let camera, renderer, scene, controls, sphereMesh, clock, loop;
 const segmentSpheres = [];
 
 function finishedLoading() {
+  isLoadingScreen.value = false;
   if (props.standupAnimation) {
     standupAnimation();
   }
@@ -231,7 +233,7 @@ onMounted(() => {
   function animate() {
     controls.update(clock.getDelta());
 
-    requestAnimationFrame(animate);
+    loop = requestAnimationFrame(animate);
 
     renderer.render(scene, camera);
   }
@@ -247,11 +249,20 @@ onUnmounted(() => {
   window.removeEventListener("resize", debouncedHandleResize);
   window.removeEventListener("click", handleInteractions);
   window.removeEventListener("mousemove", throttledHandleInteractions);
+  cancelAnimationFrame(loop);
+  loop = null;
+  scene = null;
+  camera = null;
+  renderer = null;
+  controls = null;
+  sphereMesh = null;
+  segmentSpheres.length = 0;
+  clock = null;
 });
 </script>
 
 <template>
-  <LoadingScreen @loading-finished="finishedLoading"/>
+  <LoadingScreen v-if="isLoadingScreen" @loading-finished="finishedLoading"/>
   <div :id="props.id" ref="threeContainer" class="hero_three"></div>
   <slot></slot>
 </template>
