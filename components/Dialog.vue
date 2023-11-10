@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount, ref } from "vue";
 import { useDialogStore } from '@/stores/dialogStore';
 
 const dialogStore = useDialogStore();
+const nuxtApp = useNuxtApp();
 
 const props = defineProps({
   trigger: Object,
@@ -15,6 +16,8 @@ const props = defineProps({
 const dialog = ref(null);
 
 onMounted(() => {
+  nuxtApp.$dialogPolyfill.registerDialog(dialog.value);
+
   if (dialog.value) {
     dialogStore.addDialog(dialog.value);
     dialog.value.addEventListener("click", (e) => dialogStore.closeDialog(dialog.value, e));
@@ -66,6 +69,44 @@ onBeforeUnmount(() => {
   &::backdrop {
     background-color: rgba(0, 0, 0, 0.5);
   }
+
+  /* START-polyfill */
+  position: absolute;
+  left: 0; right: 0;
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: -webkit-fit-content;
+  height: fit-content;
+  margin: auto;
+  border: solid;
+  padding: 1em;
+  background: white;
+  color: black;
+  display: block;
+
+  + .backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+  }
+
+  &:not([open]) {
+    display: none;
+  }
+
+  ._dialog_overlay {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+  }
+
+  &.fixed {
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+  /* END-polyfill */
 
   &.animate-enter {
     .dialog {
