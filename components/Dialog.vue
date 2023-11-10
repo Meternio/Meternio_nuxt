@@ -76,7 +76,9 @@ onBeforeUnmount(() => {
   width: -moz-fit-content;
   width: -webkit-fit-content;
   width: fit-content;
-  height: auto;
+  height: -moz-fit-content;
+  height: -webkit-fit-content;
+  height: fit-content;
   margin: auto;
   border: solid;
   padding: 1em;
