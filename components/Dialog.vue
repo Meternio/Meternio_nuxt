@@ -64,6 +64,18 @@ onBeforeUnmount(() => {
   </dialog>
 </template>
 
+<style lang="less">
+.dialog {
+  /* START-polyfill */
+  & + .backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+  }
+  /* END-polyfill */
+}
+</style>
+
 <style scoped lang="less">
 .dialog {
   &::backdrop {
@@ -83,12 +95,6 @@ onBeforeUnmount(() => {
   background: white;
   color: black;
   display: block;
-
-  & + .backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0; right: 0; bottom: 0; left: 0;
-  }
 
   &:not([open]) {
     display: none;
