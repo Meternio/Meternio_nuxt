@@ -263,6 +263,6 @@ onUnmounted(() => {
 
 <template>
   <LoadingScreen v-if="isLoadingScreen" @loading-finished="finishedLoading"/>
-  <div :id="props.id" ref="threeContainer" class="hero_three"></div>
+  <div :id="props.id" ref="threeContainer" class="hero_three h-full w-full"></div>
   <slot></slot>
 </template>

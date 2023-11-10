@@ -27,7 +27,7 @@ useHead({
 </script>
 
 <template>
-  <div class="home bg-slate h-screen h-[100dvh] flex items-center justify-center">
+  <div class="home bg-slate flex items-center justify-center">
     <MainMenu :start="startTour" v-if="!tourStarted" />
     <HeroImageThree v-if="tourStarted" @leave-tour="leaveTour" image="/img/main_home_8.jpg" :segments="[
       {
@@ -186,3 +186,11 @@ useHead({
     </Dialog>
   </HeroImageThree>
 </div></template>
+
+<style lang="less" scoped>
+  .home {
+    /* Fallback */
+    height: 100vh;
+    height: 100dvh;
+  }
+</style>
