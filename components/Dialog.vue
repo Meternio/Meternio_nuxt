@@ -76,9 +76,7 @@ onBeforeUnmount(() => {
   width: -moz-fit-content;
   width: -webkit-fit-content;
   width: fit-content;
-  height: -moz-fit-content;
-  height: -webkit-fit-content;
-  height: fit-content;
+  height: auto;
   margin: auto;
   border: solid;
   padding: 1em;
@@ -86,7 +84,7 @@ onBeforeUnmount(() => {
   color: black;
   display: block;
 
-  + .backdrop {
+  & + .backdrop {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0; right: 0; bottom: 0; left: 0;
