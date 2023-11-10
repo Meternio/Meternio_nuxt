@@ -266,3 +266,12 @@ onUnmounted(() => {
   <div :id="props.id" ref="threeContainer" class="hero_three h-full w-full"></div>
   <slot></slot>
 </template>
+
+<style scoped lang="less">
+  .hero_three {
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+</style>
