@@ -269,7 +269,7 @@ onUnmounted(() => {
 
 <style scoped lang="less">
   .hero_three {
-    canvas {
+    :deep(canvas) {
       width: 100%;
       height: 100%;
     }
