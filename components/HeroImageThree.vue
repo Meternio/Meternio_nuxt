@@ -20,12 +20,14 @@ const props = defineProps({
 
 const threeContainer = ref(null);
 const isLoadingScreen = ref(true);
+const isStandupAnimation = ref(false);
 
 let camera, renderer, scene, controls, sphereMesh, clock, loop;
 const segmentSpheres = [];
 
 function finishedLoading() {
   isLoadingScreen.value = false;
+
   if (props.standupAnimation) {
     standupAnimation();
   }
@@ -33,12 +35,16 @@ function finishedLoading() {
 
 async function standupAnimation() {
   controls.enabled = false;
+  isStandupAnimation.value = true;
   await controls.rotateTo(Math.PI * 0.5, Math.PI * 0.5, true);
   await controls.elevate(450, true);
   await controls.rotate(Math.PI * 0.2, 0, true);
   await controls.rotate(-Math.PI * 0.4, 0, true);
   await controls.rotate(Math.PI * 0.2, 0, true);
+  isStandupAnimation.value = false;
   controls.enabled = true;
+  window.addEventListener("click", handleInteractions);
+  window.addEventListener("mousemove", throttledHandleInteractions);
 }
 
 async function leaveAnimation() {
@@ -240,9 +246,14 @@ onMounted(() => {
 
   animate();
 
+  if (props.standupAnimation) {
+    isStandupAnimation.value = true;
+  } else {
+    window.addEventListener("click", handleInteractions);
+    window.addEventListener("mousemove", throttledHandleInteractions);
+  }
+
   window.addEventListener("resize", debouncedHandleResize);
-  window.addEventListener("click", handleInteractions);
-  window.addEventListener("mousemove", throttledHandleInteractions);
 });
 
 onUnmounted(() => {
@@ -262,7 +273,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <LoadingScreen v-if="isLoadingScreen" @loading-finished="finishedLoading"/>
+  <LoadingScreen v-if="isLoadingScreen" loading-text="virtuelles Büro wird geladen" @loading-finished="finishedLoading"/>
+  <Transition>
+    <div v-if="isStandupAnimation" class="initialize-screen font-pressStart bg-slate/60 pointer-events-none text-white absolute h-full w-full flex items-center justify-center flex-col gap-5 z-10">
+      <span :class="{
+        'animate-typeIn': !isLoadingScreen,
+      }" class="initialize-screen__text text-xl font-bold text-center">System startet.</span>
+    </div>
+  </Transition>
   <div :id="props.id" ref="threeContainer" class="hero_three h-full w-full"></div>
   <slot></slot>
 </template>
@@ -277,6 +295,25 @@ onUnmounted(() => {
       left: 0;
       right: 0;
       bottom: 0;
+    }
+  }
+
+  .initialize-screen {
+    &__text {
+      overflow: hidden; /* Ensures the content is not revealed until the animation */
+      border-right: .15em solid theme("colors.primary"); /* The typwriter cursor */
+      white-space: nowrap; /* Keeps the content on a single line */
+      margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+      text-indent: 100%;
+      width: 0;
+      max-width: fit-content;
+      &.animate-typeIn {
+        text-indent: 0;
+        width: auto;
+        animation:
+          typing 3.5s steps(40, end),
+          blink-caret .75s step-end infinite;
+      }
     }
   }
 </style>
