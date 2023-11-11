@@ -29,7 +29,7 @@ function toggleOverlayWithDelay() {
 <template>
   <header class="menu">
     <button
-      class="menu-trigger space-y-2 absolute top-4 right-4 group"
+      class="menu-trigger space-y-2 fixed top-4 right-4 group z-50"
       @click="toggleOverlay"
     >
       <span class="block w-8 h-0.5 bg-white"></span>

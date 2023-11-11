@@ -145,10 +145,14 @@ onUnmounted(() => {
       :alt="$t('home.heroImage.alt')"
       :style="props.imageBackground ? inlineCssMain : ''"
     />
-    <div class="hero-text-wrapper container relative z-10" v-if="props.title">
-      <div class="hero-text max-w-xl z-10 text-white">
+    <div :class="{
+      'fixed': !journeyOver,
+      'absolute': journeyOver,
+    }" class="hero-text-wrapper flex justify-center items-center top-0 right-0 left-0 bottom-0" v-if="props.title"
+    :style="props.imageBackground ? inlineCssBackground : ''">
+      <div class="hero-text max-w-[65%] z-10 text-white text-center">
         <h1>{{ props.title }}</h1>
-        <p>{{ props.description }}</p>
+        <p class="text-xl">{{ props.description }}</p>
       </div>
     </div>
   </section>
