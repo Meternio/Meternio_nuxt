@@ -191,6 +191,6 @@ useHead({
   .home {
     /* Fallback */
     height: 100vh;
-    height: 100dvh;
+    height: 100svh;
   }
 </style>

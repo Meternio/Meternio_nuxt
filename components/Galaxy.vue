@@ -202,7 +202,7 @@ onUnmounted(() => {
         }"
         :style="{
           transform: `rotate(${360 - parseInt(currentRotation)}deg);`,
-          top: journeyOver ? `calc(${props.maxScroll}px - 100dvh)` : undefined,
+          top: journeyOver ? `calc(${props.maxScroll}px - 100svh)` : undefined,
         }"
       >
         Wenn du mehr über meine Arbeit oder meine Projekte erfahren möchtest,
@@ -217,7 +217,7 @@ onUnmounted(() => {
   background: radial-gradient(circle at bottom, navy 0, black 100%);
   /* Fallback */
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
 
   &__stars {
     background: transparent center / 200px 200px round;
