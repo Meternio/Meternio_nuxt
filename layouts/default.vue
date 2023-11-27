@@ -1,6 +1,6 @@
 <template>
   <div class="layout relative">
-    <HeaderBurgerMenu/>
+    <!--<HeaderBurgerMenu/>-->
     <main>
       <slot />
     </main>

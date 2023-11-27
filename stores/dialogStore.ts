@@ -38,7 +38,11 @@ export const useDialogStore = defineStore("dialog", () => {
       this.closingAnimation = true;
       setTimeout(() => {
         this.closingAnimation = false;
-        dialog.close();
+        if(!dialog){
+          this.dialog.forEach((d) => d.close());
+        } else {
+          dialog.close();
+        }
         window.setTimeout(() => {
           callback();
         }, 200);

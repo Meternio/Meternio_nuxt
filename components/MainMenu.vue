@@ -19,12 +19,12 @@ onUnmounted(() => { });
 
 <template>
   <div class="main-menu font-pressStart">
-    <div class="main-menu-additional-info absolute right-16 top-5">
+    <!--<div class="main-menu-additional-info absolute right-16 top-5">
       <Icon name="mdi:arrow-right-top-bold" class="text-white w-auto h-14 animate-bounce" />
       <p class="text-white text-sm absolute left-0 -translate-x-1/4 top-16">
         für ein schnelles Navigieren
       </p>
-    </div>
+    </div>-->
     <div class="main-menu-title flex gap-3 items-baseline">
       <h1 class="text-white text-3xl">meternio</h1>
       <SkeletonLoader type="circle" class="w-[71px] h-16 -mr-3" v-if="iconLoading" />

@@ -16,6 +16,7 @@ const props = defineProps({
   cameraRotation: Array,
   standupAnimation: Boolean,
   segments: Array,
+  bindLeaveTour: null,
 });
 
 const threeContainer = ref(null);
@@ -33,6 +34,11 @@ function finishedLoading() {
   }
 }
 
+function handleLeaveTour(e) {
+  dialogStore.closeDialog(null, e, true)
+  leaveAnimation();
+}
+
 async function standupAnimation() {
   controls.enabled = false;
   isStandupAnimation.value = true;
@@ -45,6 +51,9 @@ async function standupAnimation() {
   controls.enabled = true;
   window.addEventListener("click", handleInteractions);
   window.addEventListener("mousemove", throttledHandleInteractions);
+  if(props.bindLeaveTour) {
+    props.bindLeaveTour.addEventListener('click', handleLeaveTour);
+  }
 }
 
 async function leaveAnimation() {
@@ -260,6 +269,9 @@ onUnmounted(() => {
   window.removeEventListener("resize", debouncedHandleResize);
   window.removeEventListener("click", handleInteractions);
   window.removeEventListener("mousemove", throttledHandleInteractions);
+  if(props.bindLeaveTour) {
+    props.bindLeaveTour.removeEventListener('click', handleLeaveTour);
+  }
   cancelAnimationFrame(loop);
   loop = null;
   scene = null;
