@@ -289,7 +289,7 @@ useHead({
           ><Icon name="fa6-brands:whatsapp"
         /></a>
         <a
-          href="https://www.linkedin.com/in/florian-hitz-680270123/"
+          href="https://www.linkedin.com/company/meternio"
           target="_blank"
           class="underline font-bold py-2 pl-2 rounded-lg mt-3 inline-block"
           ><Icon name="fa6-brands:linkedin"
