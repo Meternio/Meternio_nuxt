@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
   ],
   i18n: {
-    locales: ["de", "en"], // used in URL path prefix
+    locales: ["de"], // used in URL path prefix
     defaultLocale: "de", // default locale of your project for Nuxt pages and routings
   },
   css: ["@/styles/main.less"],
