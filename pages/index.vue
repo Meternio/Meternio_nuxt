@@ -18,10 +18,6 @@ function leaveTour() {
 }
 
 useHead({
-  title: "Meternio",
-  meta: [
-    { name: "description", content: "Ihr Informatiker aus der Nachbarschaft." },
-  ],
   link: [
     {
       rel: "stylesheet",
@@ -29,6 +25,13 @@ useHead({
     },
   ],
 });
+
+useSeoMeta({
+  title: 'Meternio',
+  ogTitle: 'Meternio',
+  description: 'Ihr Informatiker aus der Nachbarschaft. Ich entwickeln massgeschneiderte Softwarelösungen für Ihr Unternehmen und optimiere ihren Prozess.',
+  ogDescription: 'Ihr Informatiker aus der Nachbarschaft. Ich entwickeln massgeschneiderte Softwarelösungen für Ihr Unternehmen und optimiere ihren Prozess.',
+})
 </script>
 
 <template>
